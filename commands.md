@@ -18,3 +18,5 @@ npx prisma migrate dev
 npx prisma studio
 
 npm i zod
+
+npm i fastify-type-provider-zod
