@@ -24,3 +24,5 @@ npm i fastify-type-provider-zod
 npm i @faker-js/faker
 
 npm i dayjs
+
+npx prisma db seed
