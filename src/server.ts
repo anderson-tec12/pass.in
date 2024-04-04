@@ -6,6 +6,7 @@ import { generateSlug } from './utils/generate-slug'
 import { createEvent } from './routes/create-events'
 import { prisma } from './lib/prisma'
 import { registerForEvent } from './routes/register-for-event'
+import { getEvent } from './routes/get-event'
 
 const app = fastify()
 
@@ -54,6 +55,7 @@ app
   })
 
 app.register(createEvent)
+app.register(getEvent)
 app.register(registerForEvent)
 
 app.listen({
