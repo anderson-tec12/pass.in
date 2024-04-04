@@ -5,6 +5,7 @@ import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod
 import { generateSlug } from './utils/generate-slug'
 import { createEvent } from './routes/create-events'
 import { prisma } from './lib/prisma'
+import { registerForEvent } from './routes/register-for-event'
 
 const app = fastify()
 
@@ -53,6 +54,7 @@ app
   })
 
 app.register(createEvent)
+app.register(registerForEvent)
 
 app.listen({
   port: 3333
