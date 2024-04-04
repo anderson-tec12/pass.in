@@ -6,36 +6,69 @@ import { prisma } from '../lib/prisma';
 export async function getEventAttendees(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .get('/attendees/:attendeeId/check-in', {
+    .get('/event/:eventId/attendees', {
       schema: {
         params: z.object({
-          attendeeId: z.coerce.number().int()
+          eventId: z.string().uuid(),
+        }),
+        querystring: z.object({
+          pageIndex: z.string().nullable().default('0').transform(Number),
+          query: z.string().nullish(),
         }),
         response: {
-          201: z.null()
+          200: z.object({
+            attendees: z.array(z.object({
+              id: z.number(),
+              name: z.string(),
+              email: z.string().email(),
+              createdAt: z.date(),
+              checkInAt: z.date().nullish()
+            }))
+          })
         }
       }
     }, async (request, reply) => {
-      const { attendeeId } = request.params
+      const { eventId } = request.params
+      const { pageIndex, query } = request.query
 
-      const attendeeCheckIn = await prisma.checkIn.findUnique({
-        where: {
-          attendeeId
+      const attendees = await prisma.attendee.findMany({
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          createdAt: true,
+          checkIn: {
+            select: {
+              createdAt: true
+            }
+          }
+        },
+        where: query ? {
+          eventId,
+          name: {
+            contains: query
+          }
+        } : {
+          eventId,
+        },
+        take: 10,
+        skip: pageIndex * 10,
+        orderBy: {
+          createdAt: 'desc'
         }
       })
 
 
-      if (attendeeCheckIn) {
-        throw new Error('Attendee already checked in')
-      }
-
-      await prisma.checkIn.create({
-        data: {
-          attendeeId
-        }
+      return reply.send({
+        attendees: attendees.map(attendee => {
+          return {
+            id: attendee.id,
+            name: attendee.name,
+            email: attendee.email,
+            createdAt: attendee.createdAt,
+            checkInAt: attendee.checkIn?.createdAt
+          }
+        })
       })
-
-
-      return reply.status(201).send()
     })
 }
