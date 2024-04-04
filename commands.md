@@ -20,3 +20,7 @@ npx prisma studio
 npm i zod
 
 npm i fastify-type-provider-zod
+
+npm i @faker-js/faker
+
+npm i dayjs
