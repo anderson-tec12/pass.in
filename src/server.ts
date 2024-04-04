@@ -9,6 +9,7 @@ import { registerForEvent } from './routes/register-for-event'
 import { getEvent } from './routes/get-event'
 import { getAttendeeBadget } from './routes/get-attendee-badge'
 import { checkIn } from './routes/check-in'
+import { getEventAttendees } from './routes/get-event-attendees'
 
 const app = fastify()
 
@@ -61,6 +62,7 @@ app.register(getEvent)
 app.register(registerForEvent)
 app.register(getAttendeeBadget)
 app.register(checkIn)
+app.register(getEventAttendees)
 
 app.listen({
   port: 3333
