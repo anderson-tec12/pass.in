@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { generateSlug } from '../utils/generate-slug'
 import { prisma } from '../lib/prisma'
 import { FastifyInstance } from 'fastify'
+import { BadRequest } from './_errors/bad-request'
 
 export async function getAttendeeBadget(app: FastifyInstance) {
   app
@@ -48,7 +49,7 @@ export async function getAttendeeBadget(app: FastifyInstance) {
 
 
       if (!attendee) {
-        throw new Error('attendee is not found')
+        throw new BadRequest('attendee is not found')
       }
 
       const baseURL = `${request.protocol}://${request.hostname}`

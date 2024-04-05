@@ -4,6 +4,8 @@ import { serializerCompiler, validatorCompiler, jsonSchemaTransform } from 'fast
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
 
+import fastifyCors from '@fastify/cors'
+
 import { generateSlug } from './utils/generate-slug'
 import { createEvent } from './routes/create-events'
 import { prisma } from './lib/prisma'
@@ -12,11 +14,16 @@ import { getEvent } from './routes/get-event'
 import { getAttendeeBadget } from './routes/get-attendee-badge'
 import { checkIn } from './routes/check-in'
 import { getEventAttendees } from './routes/get-event-attendees'
+import { errorHandler } from './error-handler'
 
 const app = fastify()
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
+
+app.register(fastifyCors, {
+  origin: '*'
+})
 
 app.register(fastifySwagger, {
   swagger: {
@@ -81,8 +88,10 @@ app.register(getAttendeeBadget)
 app.register(checkIn)
 app.register(getEventAttendees)
 
+app.setErrorHandler(errorHandler)
 app.listen({
-  port: 3333
+  port: 3333,
+  host: '0.0.0.0'
 }).then(() => {
   console.log('Server Up in 3333')
 }).finally(() => {

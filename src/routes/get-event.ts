@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { generateSlug } from '../utils/generate-slug'
 import { prisma } from '../lib/prisma'
 import { FastifyInstance } from 'fastify'
+import { BadRequest } from './_errors/bad-request'
 
 export async function getEvent(app: FastifyInstance) {
   app
@@ -46,7 +47,7 @@ export async function getEvent(app: FastifyInstance) {
 
 
       if (!event) {
-        throw new Error('this event is not existies')
+        throw new BadRequest('this event is not existies')
       }
 
       const eventResponse = { event, attendeesAmount: event._count.attendees }

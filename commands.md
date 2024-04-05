@@ -30,3 +30,5 @@ npx prisma db seed
 npm i @fastify/swagger
 
 npm i @fastify/swagger-ui
+
+npm i @fastify/cors
