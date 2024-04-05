@@ -26,3 +26,7 @@ npm i @faker-js/faker
 npm i dayjs
 
 npx prisma db seed
+
+npm i @fastify/swagger
+
+npm i @fastify/swagger-ui
