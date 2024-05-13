@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "O pass.in é uma aplicação de **gestão de participantes em eventos presenciais**.",
   "main": "index.js",
+  "engines": {
+    "node": "v20.12.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch --env-file .env src/server.ts",
@@ -14,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seeds.ts"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",
